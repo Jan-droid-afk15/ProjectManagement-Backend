@@ -54,6 +54,27 @@ const getUserProfile = async (userId, callback) => {
   }
 };
 
+const updateUser = async (userId, updatedUser, callback) => {
+  try {
+    const user = await userModel.findById(userId);
+
+    if (!user) {
+      return callback({ errMessage: "User not found!" });
+    }
+
+    // Update the user's details
+    user.name = updatedUser.name;
+    user.surname = updatedUser.surname;
+    user.email = updatedUser.email;
+    user.password = updatedUser.password;
+
+    await user.save();
+
+    return callback(false, { message: "User updated successfully!" });
+  } catch (error) {
+    return callback({ msg: 'Something went wrong', details: error.message });
+  }
+};
 
 
 const getUserWithMail = async (email, callback) => {
@@ -72,10 +93,13 @@ const getUserWithMail = async (email, callback) => {
   }
 };
 
+
 module.exports = {
   register,
   login,
   getUser,
+  updateUser,
   getUserWithMail,
-  getUserProfile
+  getUserProfile,
+
 };

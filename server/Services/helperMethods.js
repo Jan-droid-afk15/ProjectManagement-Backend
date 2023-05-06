@@ -1,7 +1,7 @@
 const cardModel = require('../Models/cardModel');
 const listModel = require('../Models/listModel');
 const boardModel = require('../Models/boardModel');
-
+const eventModel = require('../Models/eventModel');
 const validateCardOwners = async (card = null, list, board, user, isCreate = false) => {
 	const validate = isCreate ? true : list.cards.filter((item) => item.toString() === card._id.toString());
 	const validate2 = board.lists.filter((item) => item.toString() === list._id.toString());
@@ -30,8 +30,16 @@ const createRandomHexColor = () => {
 	return hex.toString();
 };
 
+const validateEventOwner = async (event, user, isCreate = false) => {
+	const validate = isCreate ? true : event.owner.toString() === user._id.toString();
+	const validate2 = user.boards.filter(item => item.toString() === event.board.toString());
+  
+	return validate && validate2;
+  };
+
 module.exports = {
 	validateCardOwners,
+	validateEventOwner,
 	labelsSeed,
 	createRandomHexColor,
 };

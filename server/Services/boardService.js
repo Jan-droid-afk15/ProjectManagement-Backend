@@ -205,8 +205,39 @@ const addMember = async (id, members, user, callback) => {
 	} catch (error) {
 		return callback({ message: 'Something went wrong', details: error.message });
 	}
-};
 
+
+	
+};
+const addUnregisteredUserToBoard = async (boardId, email, callback) => {
+	try {
+	  // Check if the board exists
+	  const board = await boardModel.findById(boardId);
+	  if (!board) {
+		return callback({ errMessage: "Board not found!" });
+	  }
+  
+	  // Check if a user with the given email exists
+	  let user = await userModel.findOne({ email });
+	  if (!user) {
+		// If the user doesn't exist, create a new one
+		const newUser = userModel({ email });
+		user = await newUser.save();
+	  }
+  
+	  // Add the user to the board
+	  board.user.push(user._id);
+	  await board.save();
+  
+	  return callback(false, { message: "User added to board!" });
+	} catch (err) {
+	  return callback({
+		errMessage: "Something went wrong",
+		details: err.message,
+	  });
+	}
+  };
+  
 module.exports = {
 	create,
 	getAll,
@@ -216,4 +247,5 @@ module.exports = {
 	updateBoardDescription,
 	updateBackground,
 	addMember,
+	addUnregisteredUserToBoard
 };

@@ -7,6 +7,8 @@ const userRoute = require('./Routes/userRoute');
 const boardRoute = require('./Routes/boardRoute');
 const listRoute = require('./Routes/listRoute');
 const cardRoute = require('./Routes/cardRoute');
+const eventRoute = require('./Routes/eventRoute');
+
 const auth = require('./Middlewares/auth');
 const PORT =  3030
 
@@ -51,7 +53,7 @@ app.use('/user', userRoute);
 app.use('/board', boardRoute);
 app.use('/list', listRoute);
 app.use('/card', cardRoute);
-
+app.use('/event', eventRoute);
 
 app.listen(PORT, () => {
 	console.log(`Server is online! Port: ${PORT}`);

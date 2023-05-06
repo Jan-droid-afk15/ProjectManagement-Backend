@@ -135,6 +135,16 @@ const cardSchema = mongoose.Schema({
 			],
 		},
 	],
+	event: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'event',
+	  },
+	  
 });
-
+cardSchema.pre('remove', async function(next) {
+	const eventIds = this.events;
+	await mongoose.model('event').deleteMany({ _id: { $in: eventIds } });
+	next();
+  });
+  
 module.exports = mongoose.model('card', cardSchema);

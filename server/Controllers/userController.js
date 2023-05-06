@@ -80,10 +80,36 @@ const getUserWithMail = async(req,res) => {
   })
 }
 
+const updateUser = async (req, res) => {
+  const userId = req.user.id;
+  const { name, surname, email, password } = req.body;
+
+  // Check if at least one field is being updated
+  if (!(name || surname || email || password)) {
+    return res.status(400).send({ errMessage: "Please fill at least one field to update!" });
+  }
+
+  // Hash new password
+  if (password) {
+    const salt = bcrypt.genSaltSync(10);
+    const hashedPassword = bcrypt.hashSync(password, salt);
+    req.body.password = hashedPassword;
+  }
+
+  await userService.updateUser(userId, req.body, (err, result) => {
+    if (err) return res.status(400).send(err);
+
+    return res.status(200).send({ message: "User updated successfully", user: result });
+});
+};
+
+
+
 module.exports = {
   register,
   login,
   getUser,
   getUserWithMail,
-  getUserProfile
+  getUserProfile,
+  updateUser
 };

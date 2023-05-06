@@ -10,5 +10,5 @@ route.post('/create', boardController.create);
 route.get('/:id', boardController.getById);
 route.get('/:id/activity', boardController.getActivityById);
 route.get('/', boardController.getAll);
-
+route.post("/:boardId/unregistered-user-to-board", boardController.addUnregisteredUserToBoard);
 module.exports = route;

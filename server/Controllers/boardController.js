@@ -109,6 +109,20 @@ const addMember = async (req, res) => {
 	});
 };
 
+const addUnregisteredUserToBoard = async (req, res) => {
+  const { boardId, email } = req.body;
+
+  if (!boardId || !email) {
+    return res.status(400).send({ errMessage: 'Please provide both boardId and email' });
+  }
+
+  await boardService.addUnregisteredUserToBoard(boardId, email, (err, result) => {
+    if (err) {
+      return res.status(400).send(err);
+    }
+    return res.status(200).send(result);
+  });
+};
 module.exports = {
 	create,
 	getAll,
@@ -118,4 +132,5 @@ module.exports = {
 	updateBoardDescription,
 	updateBackground,
 	addMember,
+	addUnregisteredUserToBoard
 };

@@ -9,24 +9,21 @@ const eventSchema = mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	date: {
-		_id: false,
-		startDate: {
-			type: Date,
-		},
-		dueDate: {
-			type: Date,
-		},
-		dueTime: {
-			type: String,
-		},
-		reminder: {
-			type: Boolean,
-		},
-		completed: {
-			type: Boolean,
-			default: false,
-		},
+	startDate: {
+		type: Date,
+	},
+	dueDate: {
+		type: Date,
+	},
+	dueTime: {
+		type: String,
+	},
+	reminder: {
+		type: Boolean,
+	},
+	completed: {
+		type: Boolean,
+		default: false,
 	},
 	members: [
 		{
@@ -43,16 +40,11 @@ const eventSchema = mongoose.Schema({
 			}
 		},
 	],
-    cards: [
-		{
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'card',
-		}
-	],
-    completed: {
-        type: Boolean,
-        default: false,
-    },
+    card: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'card',
+		required: true,
+	},
 });
 
-module.exports = model('event', eventSchema);
+module.exports = mongoose.model('event', eventSchema);
